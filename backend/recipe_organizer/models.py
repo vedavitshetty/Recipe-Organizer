@@ -13,10 +13,11 @@ class Recipe(IndexedTimeStampedModel):
     def __str__(self):
         return self.title
 
+
 class Restaurant(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
-    recipes = models.ManyToManyField(Recipe, related_name='restaurants')
+    recipes = models.ManyToManyField(Recipe, related_name="restaurants")
 
     def __str__(self):
         return self.name

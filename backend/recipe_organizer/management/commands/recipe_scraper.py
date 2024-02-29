@@ -9,16 +9,16 @@ from recipe_scrapers import scrape_me
 
 
 class Command(BaseCommand):
-    text_help = 'Scrape recipe pages and import into the database'
+    text_help = "Scrape recipe pages and import into the database"
 
     def fetch_recipe_urls(self, base_url="https://www.allrecipes.com/recipes/"):
         try:
             page = requests.get(base_url, timeout=5)
             soup = BeautifulSoup(page.content, "html.parser")
-            script_tag = soup.find('script', id='allrecipes-schema_1-0')
+            script_tag = soup.find("script", id="allrecipes-schema_1-0")
             if script_tag:
                 json_data = json.loads(script_tag.string)
-                recipe_urls = [item['url'] for item in json_data[0]['itemListElement']]
+                recipe_urls = [item["url"] for item in json_data[0]["itemListElement"]]
                 return recipe_urls
             else:
                 print("Script tag not found or does not contain JSON data.")
@@ -36,7 +36,11 @@ class Command(BaseCommand):
             try:
                 title = scraper.title()
             except (AttributeError, TypeError):
-                self.stdout.write(self.style.WARNING(f'Error retrieving title for URL: {url}. Skipping import.'))
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"Error retrieving title for URL: {url}. Skipping import."
+                    )
+                )
                 continue
 
             instructions = scraper.instructions()
@@ -45,10 +49,18 @@ class Command(BaseCommand):
             # Create Recipe instance
             recipe, created = Recipe.objects.get_or_create(
                 title=title,
-                defaults={'instructions': instructions, 'ingredients': ingredients, 'source_url': url}
+                defaults={
+                    "instructions": instructions,
+                    "ingredients": ingredients,
+                    "source_url": url,
+                },
             )
 
             if created:
-                self.stdout.write(self.style.SUCCESS(f'Recipe "{title}" imported successfully'))
+                self.stdout.write(
+                    self.style.SUCCESS(f'Recipe "{title}" imported successfully')
+                )
             else:
-                self.stdout.write(self.style.WARNING(f'Recipe "{title}" already exists'))
+                self.stdout.write(
+                    self.style.WARNING(f'Recipe "{title}" already exists')
+                )
