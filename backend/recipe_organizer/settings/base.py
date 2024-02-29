@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "defender",
     "common",
     "users",
+    "recipe_organizer",
 ]
 
 MIDDLEWARE = [
