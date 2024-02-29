@@ -59,7 +59,8 @@ services:
       - result
 
   mailhog: # service for faking a SMTP server
-    image: mailhog/mailhog
+    image: mailhog/mailhog:latest
+    platform: linux/amd64
     ports:
       - '1025:1025' # smtp server
       - '8025:8025' # web ui
