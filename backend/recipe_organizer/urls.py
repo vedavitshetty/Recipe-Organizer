@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 import django_js_reverse.views
 from common.routes import routes as common_routes
+from common.views import IndexView
 from rest_framework.routers import DefaultRouter
 
 from . import views
@@ -37,4 +38,6 @@ urlpatterns = [
         ),
         name="recipe-detail",
     ),
+    # Catch-all route for React app
+    re_path(r"^(?P<path>.*)/$", IndexView.as_view(), name="index"),
 ]
