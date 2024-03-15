@@ -12,6 +12,10 @@ module.exports = {
     browser: true,
     jest: true
   },
+  parser: "@babel/eslint-parser",
+  parserOptions: {
+    "sourceType": "module"
+  },
   settings: {
     'import/resolver': {
       webpack: {
