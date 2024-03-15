@@ -1,6 +1,7 @@
 from django.db import models
 
 from common.models import IndexedTimeStampedModel
+from users.models import User
 
 
 class Recipe(IndexedTimeStampedModel):
@@ -15,9 +16,21 @@ class Recipe(IndexedTimeStampedModel):
 
 
 class Restaurant(models.Model):
+    owner = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="restaurant"
+    )
     name = models.CharField(max_length=100)
-    address = models.CharField(max_length=200)
     recipes = models.ManyToManyField(Recipe, related_name="restaurants")
 
     def __str__(self):
         return self.name
+
+
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(
+        Restaurant, on_delete=models.CASCADE, related_name="employees"
+    )
+
+    def __str__(self):
+        return f"{self.user.email} - {self.restaurant.name}"
