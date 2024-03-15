@@ -7,13 +7,15 @@ const AccountCreationForm = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [restaurantName, setRestaurantName] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createUser(email, password));
+    dispatch(createUser({ email, password, restaurantName }));
     // Reset form fields after submission
     setEmail('');
     setPassword('');
+    setRestaurantName('');
   };
 
   return (
@@ -26,6 +28,11 @@ const AccountCreationForm = () => {
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
         <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      </Form.Group>
+
+      <Form.Group controlId="formBasicRestaurant">
+        <Form.Label>Restaurant Name</Form.Label>
+        <Form.Control type="text" placeholder="Enter restaurant name" value={restaurantName} onChange={(e) => setRestaurantName(e.target.value)} />
       </Form.Group>
 
       <Button className='mt-1' variant="primary" type="submit">

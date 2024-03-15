@@ -1,27 +1,31 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import AccountCreationForm from './AccountCreationForm';
 import LoginForm from './LoginForm';
+import AccountCreationForm from './AccountCreationForm';
 
 const Home = () => {
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const [showLoginForm, setShowLoginForm] = useState(true);
+
+  const toggleForm = () => {
+    setShowLoginForm(!showLoginForm);
+  };
 
   return (
     <Container>
       <Row className="justify-content-center">
         <Col md={6}>
-          {isAuthenticated ? (
-            <div>
-              {/* TODO: Render authenticated content here */}
-            </div>
-          ) : (
-            <div>
+          {showLoginForm ? (
+            <>
               <h2>Login</h2>
               <LoginForm />
-              <p className="mt-3">Don't have an account? Sign up below:</p>
+              <p className="mt-3">Don't have an account? <button onClick={toggleForm}>Sign up here</button></p>
+            </>
+          ) : (
+            <>
+              <h2>Create Account</h2>
               <AccountCreationForm />
-            </div>
+              <p className="mt-3">Already have an account? <button onClick={toggleForm}>Login here</button></p>
+            </>
           )}
         </Col>
       </Row>
