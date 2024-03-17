@@ -20,7 +20,7 @@ class Restaurant(models.Model):
         User, on_delete=models.CASCADE, related_name="restaurant"
     )
     name = models.CharField(max_length=100)
-    recipes = models.ManyToManyField(Recipe, related_name="restaurants")
+    recipes = models.ManyToManyField(Recipe, related_name="restaurants", blank=True)
 
     def __str__(self):
         return self.name
