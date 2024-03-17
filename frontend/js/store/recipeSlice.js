@@ -4,6 +4,7 @@ import customAxios from '../utils/axios';
 
 const initialState = {
   recipes: [],
+  currentRecipe: {},
   loading: false,
   error: '',
 };
@@ -56,6 +57,19 @@ export const removeFromRestaurant = createAsyncThunk(
   }
 );
 
+export const fetchRecipeById = createAsyncThunk(
+  'recipes/fetchRecipeById',
+  async (recipeId, { rejectWithValue }) => {
+    try {
+      const response = await customAxios.get(`/api/recipes/${recipeId}/`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 export const recipeSlice = createSlice({
   name: 'recipes',
   initialState,
@@ -65,6 +79,9 @@ export const recipeSlice = createSlice({
     },
     resetRecipes: (state) => {
       state.recipes = initialState.recipes;
+    },
+    setCurrentRecipe: (state, action) => {
+      state.currentRecipe = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -92,6 +109,18 @@ export const recipeSlice = createSlice({
       .addCase(fetchRestaurantRecipes.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch recipes';
+      })
+      .addCase(fetchRecipeById.pending, (state) => {
+        state.loading = true;
+        state.error = '';
+      })
+      .addCase(fetchRecipeById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentRecipe = action.payload;
+      })
+      .addCase(fetchRecipeById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch recipe';
       });
   },
 }).reducer;

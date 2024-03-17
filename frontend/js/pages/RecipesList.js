@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToRestaurant, fetchOtherRecipes, fetchRestaurantRecipes, removeFromRestaurant } from '../store/recipeSlice';
+import { addToRestaurant, fetchOtherRecipes, removeFromRestaurant } from '../store/recipeSlice';
+import { parseIngredients } from '../constants';
 
 const RecipesList = () => {
   const dispatch = useDispatch();
@@ -17,16 +18,6 @@ const RecipesList = () => {
 
   const toggleRestaurantRecipes = () => {
     setShowRestaurantRecipes((prev) => !prev);
-  };
-
-  // Function to parse ingredients string into an array
-  const parseIngredients = (ingredientsString) => {
-    try {
-      return JSON.parse(ingredientsString.replace(/'/g, '"'));
-    } catch (error) {
-      console.error('Error parsing ingredients:', error);
-      return [];
-    }
   };
 
   return (
