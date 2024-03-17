@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import * as Sentry from '@sentry/react';
 
 import Home from './pages/Home';
-import RecipeList from './pages/RecipeList';
+import AllRecipesList from './pages/AllRecipesList';
 import configureStore from './store';
 
 const store = configureStore({});
@@ -15,7 +15,7 @@ const App = () => (
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/recipes" element={<RecipeList />} />
+          <Route path="/recipes/all" element={<AllRecipesList />} />
         </Routes>
       </Router>
     </Provider>
