@@ -25,14 +25,21 @@ const AccountCreationForm = () => {
       return;
     }
 
-    let restaurantName = selectedRestaurant === 'new' ? newRestaurantName.trim() : existingRestaurants.find(restaurant => restaurant.name === selectedRestaurant)?.name || '';
+    let formData = { email, password };
 
-    dispatch(createUser({ email, password, restaurantName }));
+    if (selectedRestaurant === 'new') {
+      formData.restaurant = { name: newRestaurantName.trim() };
+    } else {
+      formData.restaurant = { id: selectedRestaurant };
+    }
+
+    dispatch(createUser(formData));
 
     setEmail('');
     setPassword('');
     setSelectedRestaurant('');
     setNewRestaurantName('');
+    setRestaurantOption('');
   };
 
   const handleSelectChange = (e) => {
@@ -56,6 +63,7 @@ const AccountCreationForm = () => {
       <Form.Group className='mt-2' controlId="formBasicRestaurant">
         <Form.Label>Restaurant</Form.Label>
         <InputGroup>
+          <div>
           <FormControl
             as="select"
             value={restaurantOption}
@@ -63,7 +71,7 @@ const AccountCreationForm = () => {
           >
             <option value="">Select restaurant</option>
             {existingRestaurants.map((restaurant) => (
-              <option key={restaurant.id} value={restaurant.name}>{restaurant.name}</option>
+              <option key={restaurant.id} value={restaurant.id}>{restaurant.name}</option>
             ))}
             <option value="new">Add new restaurant</option>
           </FormControl>
@@ -76,6 +84,7 @@ const AccountCreationForm = () => {
               className='mt-2'
             />
           )}
+          </div>
         </InputGroup>
       </Form.Group>
 

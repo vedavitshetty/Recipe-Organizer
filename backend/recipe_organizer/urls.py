@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 
 import django_js_reverse.views
-from common.routes import routes as common_routes
 from common.views import IndexView
 from rest_framework.routers import DefaultRouter
 
@@ -10,10 +9,6 @@ from . import views
 
 
 router = DefaultRouter()
-
-routes = common_routes
-for route in routes:
-    router.register(route["regex"], route["viewset"], basename=route["basename"])
 
 urlpatterns = [
     path("", include("common.urls"), name="common"),
@@ -38,7 +33,16 @@ urlpatterns = [
         ),
         name="recipe-detail",
     ),
-    path("api/restaurants/", views.AllRestaurantsViewSet.as_view({"get": "list"}), name="restaurant-list"),
+    path(
+        "api/restaurants/",
+        views.AllRestaurantsViewSet.as_view({"get": "list"}),
+        name="restaurant-list",
+    ),
+    path(
+        "api/register/",
+        views.UserRegistrationViewSet.as_view({"post": "create"}),
+        name="register",
+    ),
     # Catch-all route for React app
     re_path(r"^(?P<path>.*)/$", IndexView.as_view(), name="index"),
 ]
