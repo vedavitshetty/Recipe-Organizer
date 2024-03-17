@@ -19,7 +19,7 @@ class Restaurant(models.Model):
     owner = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="restaurant"
     )
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     recipes = models.ManyToManyField(Recipe, related_name="restaurants", blank=True)
 
     def __str__(self):
