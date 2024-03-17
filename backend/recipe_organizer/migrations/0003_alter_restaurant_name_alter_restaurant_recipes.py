@@ -4,20 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('recipe_organizer', '0002_remove_restaurant_address_restaurant_owner_employee'),
+        (
+            "recipe_organizer",
+            "0002_remove_restaurant_address_restaurant_owner_employee",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='restaurant',
-            name='name',
+            model_name="restaurant",
+            name="name",
             field=models.CharField(max_length=100, unique=True),
         ),
         migrations.AlterField(
-            model_name='restaurant',
-            name='recipes',
-            field=models.ManyToManyField(blank=True, related_name='restaurants', to='recipe_organizer.recipe'),
+            model_name="restaurant",
+            name="recipes",
+            field=models.ManyToManyField(
+                blank=True, related_name="restaurants", to="recipe_organizer.recipe"
+            ),
         ),
     ]

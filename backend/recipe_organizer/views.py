@@ -62,50 +62,78 @@ class UserRegistrationViewSet(viewsets.ViewSet):
             status=status.HTTP_201_CREATED,
         )
 
+
 class UserLoginAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        email = request.data.get('email')
-        password = request.data.get('password')
+        email = request.data.get("email")
+        password = request.data.get("password")
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+            return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
         else:
-            return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+            )
+
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes: ClassVar = [IsAuthenticated]
 
+    @action(detail=False, methods=["get"])
+    def show_restaurant_recipes(self, request):
+        user = request.user
+        restaurant = user.affiliated_restaurant()
+        if restaurant:
+            queryset = restaurant.recipes.all()
+        else:
+            queryset = Recipe.objects.none()  # Return empty queryset if user doesn't belong to a restaurant
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["get"])
+    def show_non_restaurant_recipes(self, request):
+        user = request.user
+        restaurant = user.affiliated_restaurant()
+        if restaurant:
+            queryset = Recipe.objects.exclude(restaurants=restaurant)
+        else:
+            queryset = Recipe.objects.all()  # Return all recipes if user doesn't belong to a restaurant
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
     @action(detail=True, methods=["post"])
-    def assign_to_restaurant(self, request, pk=None):
+    def add_to_restaurant(self, request, pk=None):
         recipe = self.get_object()
         user = request.user
-        if user.restaurant:
-            user.restaurant.recipes.add(recipe)
+        restaurant = user.affiliated_restaurant()
+        if not restaurant:
             return Response(
-                {"message": "Recipe assigned to restaurant successfully"},
-                status=status.HTTP_200_OK,
+                {"error": "User does not belong to a restaurant"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
+        restaurant.recipes.add(recipe)
         return Response(
-            {"error": "User does not belong to a restaurant"},
-            status=status.HTTP_400_BAD_REQUEST,
+            {"message": "Recipe added to restaurant successfully"},
+            status=status.HTTP_200_OK,
         )
 
     @action(detail=True, methods=["post"])
     def remove_from_restaurant(self, request, pk=None):
         recipe = self.get_object()
         user = request.user
-        if user.restaurant:
-            user.restaurant.recipes.remove(recipe)
+        restaurant = user.affiliated_restaurant()
+        if not restaurant:
             return Response(
-                {"message": "Recipe removed from restaurant successfully"},
-                status=status.HTTP_200_OK,
+                {"error": "User does not belong to a restaurant"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
+        restaurant.recipes.remove(recipe)
         return Response(
-            {"error": "User does not belong to a restaurant"},
-            status=status.HTTP_400_BAD_REQUEST,
+            {"message": "Recipe removed from restaurant successfully"},
+            status=status.HTTP_200_OK,
         )
 
 

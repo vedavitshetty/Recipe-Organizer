@@ -1,17 +1,30 @@
+// recipeSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import customAxios from '../utils/axios';
 
 const initialState = {
-  allRecipes: [],
+  recipes: [], // Change this from 'recipes' to 'allRecipes'
   loading: false,
   error: '',
 };
 
-export const fetchRecipes = createAsyncThunk(
+export const fetchOtherRecipes = createAsyncThunk(
   'recipes/fetchRecipes',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await customAxios.get('/api/recipes/');
+      const response = await customAxios.get('/api/recipes/show_non_restaurant_recipes/');
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchRestaurantRecipes = createAsyncThunk(
+  'recipes/fetchRestaurantRecipes',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await customAxios.get('/api/recipes/show_restaurant_recipes/');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -24,26 +37,37 @@ export const recipeSlice = createSlice({
   initialState,
   reducers: {
     setRecipes: (state, action) => {
-      state.allRecipes = action.payload;
+      state.recipes = action.payload;
     },
     resetRecipes: (state) => {
-      state.allRecipes = initialState.allRecipes;
+      state.recipes = initialState.recipes;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchRecipes.pending, (state) => {
+      .addCase(fetchOtherRecipes.pending, (state) => {
         state.loading = true;
         state.error = '';
       })
-      .addCase(fetchRecipes.fulfilled, (state, action) => {
+      .addCase(fetchOtherRecipes.fulfilled, (state, action) => {
         state.loading = false;
-        state.allRecipes = action.payload.results;
+        state.recipes = action.payload; // Change this line
       })
-      .addCase(fetchRecipes.rejected, (state, action) => {
+      .addCase(fetchOtherRecipes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch recipes';
+      })
+      .addCase(fetchRestaurantRecipes.pending, (state) => {
+        state.loading = true;
+        state.error = '';
+      })
+      .addCase(fetchRestaurantRecipes.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recipes = action.payload; // Change this line
+      })
+      .addCase(fetchRestaurantRecipes.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch recipes';
       });
   },
 }).reducer;
-

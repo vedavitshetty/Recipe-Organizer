@@ -31,5 +31,11 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
     def get_short_name(self):
         return self.email
 
+    def affiliated_restaurant(self):
+        if hasattr(self, "employee"):
+            return self.employee.restaurant
+        else:
+            return self.restaurant
+
     def __str__(self):
         return self.email
