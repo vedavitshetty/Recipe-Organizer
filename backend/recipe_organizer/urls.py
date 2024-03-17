@@ -44,11 +44,31 @@ urlpatterns = [
         name="register",
     ),
     path("api/login/", views.UserLoginAPIView.as_view(), name="login"),
-    path("api/recipes/show_restaurant_recipes/", views.RecipeViewSet.as_view({"get": "show_restaurant_recipes"}), name="show-restaurant-recipes"),
-    path("api/recipes/show_non_restaurant_recipes/", views.RecipeViewSet.as_view({"get": "show_non_restaurant_recipes"}), name="show-non-restaurant-recipes"),
-    path("api/recipes/add_to_restaurant/<int:pk>/", views.RecipeViewSet.as_view({"post": "add_to_restaurant"}), name="add-to-restaurant"),
-    path("api/recipes/remove_from_restaurant/<int:pk>/", views.RecipeViewSet.as_view({"post": "remove_from_restaurant"}), name="remove-from-restaurant"),
-    path("api/recipes/<int:pk>/", views.RecipeViewSet.as_view({"get": "retrieve"}), name="recipe-detail"),
+    path(
+        "api/recipes/show_restaurant_recipes/",
+        views.RecipeViewSet.as_view({"get": "show_restaurant_recipes"}),
+        name="show-restaurant-recipes",
+    ),
+    path(
+        "api/recipes/show_non_restaurant_recipes/",
+        views.RecipeViewSet.as_view({"get": "show_non_restaurant_recipes"}),
+        name="show-non-restaurant-recipes",
+    ),
+    path(
+        "api/recipes/add_to_restaurant/<int:pk>/",
+        views.RecipeViewSet.as_view({"post": "add_to_restaurant"}),
+        name="add-to-restaurant",
+    ),
+    path(
+        "api/recipes/remove_from_restaurant/<int:pk>/",
+        views.RecipeViewSet.as_view({"post": "remove_from_restaurant"}),
+        name="remove-from-restaurant",
+    ),
+    path(
+        "api/recipes/<int:pk>/",
+        views.RecipeViewSet.as_view({"get": "retrieve"}),
+        name="recipe-detail",
+    ),
     # Catch-all route for React app
     re_path(r"^(?P<path>.*)/$", IndexView.as_view(), name="index"),
 ]

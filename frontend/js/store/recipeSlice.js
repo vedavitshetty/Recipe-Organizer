@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import customAxios from '../utils/axios';
 
 const initialState = {
-  recipes: [], // Change this from 'recipes' to 'allRecipes'
+  recipes: [],
   loading: false,
   error: '',
 };
@@ -25,6 +25,30 @@ export const fetchRestaurantRecipes = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await customAxios.get('/api/recipes/show_restaurant_recipes/');
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const addToRestaurant = createAsyncThunk(
+  'user/addToRestaurant',
+  async (recipeId, { rejectWithValue }) => {
+    try {
+      const response = await customAxios.post(`/api/recipes/add_to_restaurant/${recipeId}/`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const removeFromRestaurant = createAsyncThunk(
+  'user/removeFromRestaurant',
+  async (recipeId, { rejectWithValue }) => {
+    try {
+      const response = await customAxios.post(`/api/recipes/remove_from_restaurant/${recipeId}/`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -63,7 +87,7 @@ export const recipeSlice = createSlice({
       })
       .addCase(fetchRestaurantRecipes.fulfilled, (state, action) => {
         state.loading = false;
-        state.recipes = action.payload; // Change this line
+        state.recipes = action.payload;
       })
       .addCase(fetchRestaurantRecipes.rejected, (state, action) => {
         state.loading = false;

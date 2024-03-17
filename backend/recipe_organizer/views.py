@@ -86,10 +86,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def show_restaurant_recipes(self, request):
         user = request.user
         restaurant = user.affiliated_restaurant()
-        if restaurant:
-            queryset = restaurant.recipes.all()
-        else:
-            queryset = Recipe.objects.none()  # Return empty queryset if user doesn't belong to a restaurant
+        if not restaurant:
+            return Response(
+                {"error": "User does not belong to a restaurant"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        queryset = restaurant.recipes.all()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -97,10 +99,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def show_non_restaurant_recipes(self, request):
         user = request.user
         restaurant = user.affiliated_restaurant()
-        if restaurant:
-            queryset = Recipe.objects.exclude(restaurants=restaurant)
-        else:
-            queryset = Recipe.objects.all()  # Return all recipes if user doesn't belong to a restaurant
+        if not restaurant:
+            return Response(
+                {"error": "User does not belong to a restaurant"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        queryset = Recipe.objects.exclude(restaurants=restaurant)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 

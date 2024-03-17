@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchOtherRecipes, fetchRestaurantRecipes } from '../store/recipeSlice';
+import { addToRestaurant, fetchOtherRecipes, fetchRestaurantRecipes, removeFromRestaurant } from '../store/recipeSlice';
 
 const RecipesList = () => {
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipeSlice.recipes);
   const [showRestaurantRecipes, setShowRestaurantRecipes] = useState(false);
-
 
   useEffect(() => {
     if (showRestaurantRecipes) {
@@ -41,6 +40,7 @@ const RecipesList = () => {
           <tr>
             <th>Name</th>
             <th>Ingredients</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -53,6 +53,13 @@ const RecipesList = () => {
                     <li key={index}>{ingredient}</li>
                   ))}
                 </ul>
+              </td>
+              <td>
+                {showRestaurantRecipes ? (
+                  <button onClick={() => dispatch(removeFromRestaurant(recipe.id))}>Remove</button>
+                ) : (
+                  <button onClick={() => dispatch(addToRestaurant(recipe.id))}>Add</button>
+                )}
               </td>
             </tr>
           ))}
