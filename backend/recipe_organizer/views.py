@@ -1,9 +1,12 @@
 from typing import ClassVar
 
+from django.contrib.auth import authenticate, login
+
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Employee, Recipe, Restaurant
 from .serializers import RecipeSerializer, RestaurantSerializer, UserSerializer
@@ -59,6 +62,16 @@ class UserRegistrationViewSet(viewsets.ViewSet):
             status=status.HTTP_201_CREATED,
         )
 
+class UserLoginAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()

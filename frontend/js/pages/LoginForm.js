@@ -10,7 +10,7 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser(email, password));
+    dispatch(loginUser({email, password}));
     // Reset form fields after submission
     setEmail('');
     setPassword('');

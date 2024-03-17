@@ -43,6 +43,7 @@ urlpatterns = [
         views.UserRegistrationViewSet.as_view({"post": "create"}),
         name="register",
     ),
+    path('api/login/', views.UserLoginAPIView.as_view(), name='login'),
     # Catch-all route for React app
     re_path(r"^(?P<path>.*)/$", IndexView.as_view(), name="index"),
 ]
