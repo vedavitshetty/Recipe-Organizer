@@ -46,7 +46,7 @@ export const logoutUser = createAsyncThunk(
 );
 
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -90,14 +90,11 @@ const userSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
-        state.user = initialState.user; 
+        state.user = initialState.user;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Logout failed';
       });
   },
-});
-
-export const { setUser, resetUser } = userSlice.actions;
-export default userSlice.reducer;
+}).reducer;

@@ -38,6 +38,7 @@ urlpatterns = [
         ),
         name="recipe-detail",
     ),
+    path("api/restaurants/", views.AllRestaurantsViewSet.as_view({"get": "list"}), name="restaurant-list"),
     # Catch-all route for React app
     re_path(r"^(?P<path>.*)/$", IndexView.as_view(), name="index"),
 ]
