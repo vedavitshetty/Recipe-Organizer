@@ -23,7 +23,7 @@ const Home = () => {
           ) : (
             <>
               <h2>Create Account</h2>
-              <AccountCreationForm />
+              <AccountCreationForm directToLogin={toggleForm} />
               <p className="mt-3">Already have an account? <button onClick={toggleForm}>Login here</button></p>
             </>
           )}
