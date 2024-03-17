@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom'; // Import Link
 import { addToRestaurant, fetchOtherRecipes, removeFromRestaurant } from '../store/recipeSlice';
 import { parseIngredients } from '../constants';
 
@@ -37,7 +38,9 @@ const RecipesList = () => {
         <tbody>
           {recipes?.map((recipe) => (
             <tr key={recipe.id}>
-              <td>{recipe.title}</td>
+              <td>
+                <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+              </td>
               <td>
                 <ul>
                   {parseIngredients(recipe.ingredients)?.map((ingredient, index) => (
