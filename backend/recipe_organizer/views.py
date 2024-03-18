@@ -1,6 +1,7 @@
 from typing import ClassVar
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -75,6 +76,12 @@ class UserLoginAPIView(APIView):
             return Response(
                 {"message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
             )
+
+
+class LogoutView(APIView):
+    def post(self, request, *args, **kwargs):
+        logout(request)
+        return JsonResponse({"message": "Logged out successfully"})
 
 
 class RecipeViewSet(viewsets.ModelViewSet):

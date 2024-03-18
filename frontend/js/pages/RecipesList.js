@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom';
 import { addToRestaurant, fetchOtherRecipes, removeFromRestaurant } from '../store/recipeSlice';
+import LogoutButton from '../components/LogoutButton';
 import { parseIngredients } from '../constants';
 
 const RecipesList = () => {
@@ -24,6 +25,7 @@ const RecipesList = () => {
   return (
     <div>
       <h2>{showRestaurantRecipes ? 'Restaurant' : 'Non-Restaurant'} Recipes</h2>
+      <LogoutButton />
       <button onClick={toggleRestaurantRecipes}>
         {showRestaurantRecipes ? 'Show Non-Restaurant Recipes' : 'Show Restaurant Recipes'}
       </button>

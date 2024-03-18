@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchRecipeById } from '../store/recipeSlice';
 import { parseIngredients } from '../constants';
+import LogoutButton from '../components/LogoutButton';
 
 const ViewRecipe = () => {
   const { id } = useParams();
@@ -16,6 +17,7 @@ const ViewRecipe = () => {
   return (
     <div>
       <h2>Recipe Details</h2>
+      <LogoutButton />
       {recipe ? (
         <div>
           <h3>{recipe.title}</h3>

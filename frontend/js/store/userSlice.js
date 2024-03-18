@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await customAxios.post('/api/login/', loginData);
       const { token, user } = response.data;
-      localStorage.setItem('token', token); // Store token in local storage
+      localStorage.setItem('token', token);
       return user;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -37,7 +37,7 @@ export const logoutUser = createAsyncThunk(
   'user/logoutUser',
   async (_, { rejectWithValue }) => {
     try {
-      await customAxios.post('/accounts/logout/');
+      await customAxios.post('/api/logout/');
       localStorage.removeItem('token');
     } catch (error) {
       return rejectWithValue(error.response.data);

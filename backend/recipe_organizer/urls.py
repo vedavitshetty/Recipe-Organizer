@@ -44,6 +44,7 @@ urlpatterns = [
         name="register",
     ),
     path("api/login/", views.UserLoginAPIView.as_view(), name="login"),
+    path("api/logout/", views.LogoutView.as_view(), name="logout"),
     path(
         "api/recipes/show_restaurant_recipes/",
         views.RecipeViewSet.as_view({"get": "show_restaurant_recipes"}),
