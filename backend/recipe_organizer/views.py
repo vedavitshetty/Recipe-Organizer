@@ -5,7 +5,7 @@ from django.http import JsonResponse
 
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,6 +14,8 @@ from .serializers import RecipeSerializer, RestaurantSerializer, UserSerializer
 
 
 class UserRegistrationViewSet(viewsets.ViewSet):
+    permission_classes: ClassVar = [AllowAny]
+
     def create(self, request, *args, **kwargs):
         # Extract user data from the request
         email = request.data.get("email")
@@ -65,6 +67,8 @@ class UserRegistrationViewSet(viewsets.ViewSet):
 
 
 class UserLoginAPIView(APIView):
+    permission_classes: ClassVar = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         email = request.data.get("email")
         password = request.data.get("password")
@@ -79,6 +83,8 @@ class UserLoginAPIView(APIView):
 
 
 class LogoutView(APIView):
+    permission_classes: ClassVar = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         logout(request)
         return JsonResponse({"message": "Logged out successfully"})
@@ -151,8 +157,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class AllRecipesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+    permission_classes: ClassVar = [IsAuthenticated]
 
 
 class AllRestaurantsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    permission_classes: ClassVar = [AllowAny]
