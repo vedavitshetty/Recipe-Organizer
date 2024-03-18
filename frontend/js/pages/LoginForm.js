@@ -1,23 +1,39 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
 import { loginUser } from '../store/userSlice';
+import { useNavigate } from 'react-router';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [formError, setFormError] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser({email, password}));
-    // Reset form fields after submission
-    setEmail('');
-    setPassword('');
+    if (!email || !password) {
+      setFormError('Please enter both email and password.');
+      return;
+    }
+    dispatch(loginUser({ email, password }))
+      .unwrap()
+      .then(() => {
+        // Reset form fields after submission
+        setEmail('');
+        setPassword('');
+        navigate('/recipes');
+      })
+      .catch((error) => {
+        // Set form error if login failed
+        setFormError(error?.message || 'Login failed');
+      });
   };
 
   return (
     <Form onSubmit={handleSubmit}>
+      {formError && <Alert className='mt-1' style={{ color: 'red' }}>{formError}</Alert>}
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
