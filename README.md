@@ -35,10 +35,21 @@ This project was bootstrapped using the [Django React Boilerplate](https://githu
 1. Clone the repository: 
 `git clone https://github.com/vedavitshetty/Recipe-Organizer/`
 2. Navigate to the project directory:
-`cd recipe_organizer`
-3. Build and run the Docker containers:
+`cd Recipe-Organizer`
+3. Create a .env file in the backend directory by copying the .env.example file and choosing your preferred database (PostgreSQL or SQLite): `cp backend/.env.example backend/.env`
+    
+    Edit the backend/.env file and uncomment one of the DATABASE_URL lines based on your preference. For example, if you choose PostgreSQL, your .env file might look like this:
+    
+    ```DJANGO_SETTINGS_MODULE=recipe_organizer.settings.local
+    CELERY_BROKER_URL=amqp://broker:5672//
+    REDIS_URL=redis://result:6379
+    # Please choose postgres or sqlite as your DB:
+    DATABASE_URL=postgres://recipe_organizer:password@db:5432/recipe_organizer
+    # DATABASE_URL=sqlite:///db.sqlite3
+    ```
+5. Build and run the Docker containers:
 `docker-compose up --build`
-4. Access the application in your browser at http://localhost:8000
+6. Access the application in your browser at http://localhost:8000
 
 ## Usage
 1. Browse through the list of recipes to find the desired one.
