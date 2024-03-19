@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import RecipesListPage from './pages/RecipesListPage';
 import ViewRecipePage from './pages/ViewRecipePage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const store = configureStore({});
 
@@ -26,6 +27,7 @@ const App = () => {
     <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
       <Router>
         <Routes>
+          <Route path="/" element={<Navigate to={isAuthenticated || token ? '/recipes' : '/login'} />} />
           <Route path="/login" element={!(isAuthenticated || token)  ? <LoginPage /> : <Navigate to="/recipes" />} />
           <Route path="/signup" element={!(isAuthenticated || token)  ? <SignupPage /> : <Navigate to="/recipes" />} />
           <Route
@@ -36,6 +38,7 @@ const App = () => {
             path="/recipes/:id"
             element={isAuthenticated || token ? <ViewRecipePage /> : <Navigate to="/login" />}
           />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
     </Sentry.ErrorBoundary>
