@@ -15,9 +15,9 @@ const ViewRecipePage = () => {
   }, [dispatch, id]);
 
   return (
-    <div>
-      <h2>Recipe Details</h2>
+    <div className='mt-3'>
       <LogoutButton />
+      <h2>Recipe Details</h2>
       {recipe ? (
         <div>
           <h3>{recipe.title}</h3>

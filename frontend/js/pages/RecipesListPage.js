@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { addToRestaurant, fetchOtherRecipes, fetchRestaurantRecipes, removeFromRestaurant } from '../store/recipeSlice';
 import LogoutButton from '../components/LogoutButton';
 import { parseIngredients } from '../constants';
+import '../../sass/pages/RecipesListPage.scss';
 
 const RecipesListPage = () => {
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipeSlice.recipes);
-  const [showRestaurantRecipes, setShowRestaurantRecipes] = useState(false);
+  const [showRestaurantRecipes, setShowRestaurantRecipes] = useState(true);
 
   useEffect(() => {
     if (showRestaurantRecipes) {
@@ -23,13 +24,13 @@ const RecipesListPage = () => {
   };
 
   return (
-    <div>
-      <h2>{showRestaurantRecipes ? 'Restaurant' : 'Non-Restaurant'} Recipes</h2>
+    <div className="recipes-list-container">
       <LogoutButton />
-      <button onClick={toggleRestaurantRecipes}>
+      <h2>{showRestaurantRecipes ? 'Restaurant' : 'Non-Restaurant'} Recipes</h2>
+      <button onClick={toggleRestaurantRecipes} className="toggle-button">
         {showRestaurantRecipes ? 'Show Non-Restaurant Recipes' : 'Show Restaurant Recipes'}
       </button>
-      <table>
+      <table className="recipes-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -52,9 +53,9 @@ const RecipesListPage = () => {
               </td>
               <td>
                 {showRestaurantRecipes ? (
-                  <button onClick={() => dispatch(removeFromRestaurant(recipe.id))}>Remove</button>
+                  <button onClick={() => dispatch(removeFromRestaurant(recipe.id))} className="remove-button">Remove</button>
                 ) : (
-                  <button onClick={() => dispatch(addToRestaurant(recipe.id))}>Add</button>
+                  <button onClick={() => dispatch(addToRestaurant(recipe.id))} className="add-button">Add</button>
                 )}
               </td>
             </tr>

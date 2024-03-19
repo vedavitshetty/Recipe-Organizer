@@ -1,0 +1,32 @@
+.recipes-list-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+
+  .toggle-button {
+    margin-bottom: 10px;
+  }
+
+  .recipes-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+
+  .add-button, .remove-button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
