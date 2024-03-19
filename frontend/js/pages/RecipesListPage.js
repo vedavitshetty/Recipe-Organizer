@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addToRestaurant, fetchOtherRecipes, removeFromRestaurant } from '../store/recipeSlice';
+import { addToRestaurant, fetchOtherRecipes, fetchRestaurantRecipes, removeFromRestaurant } from '../store/recipeSlice';
 import LogoutButton from '../components/LogoutButton';
 import { parseIngredients } from '../constants';
 
