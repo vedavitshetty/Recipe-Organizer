@@ -4,9 +4,11 @@ import { Provider } from 'react-redux';
 import * as Sentry from '@sentry/react';
 
 import Home from './pages/Home';
-import RecipesList from './pages/RecipesList';
-import ViewRecipe from './pages/ViewRecipe'; // Import the ViewRecipe component
+import RecipesListPage from './pages/RecipesListPage';
+import ViewRecipePage from './pages/ViewRecipePage';
 import configureStore from './store';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 const store = configureStore({});
 
@@ -15,9 +17,10 @@ const App = () => (
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/recipes" element={<RecipesList />} />
-          <Route path="/recipes/:id" element={<ViewRecipe />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/recipes" element={<RecipesListPage />} />
+          <Route path="/recipes/:id" element={<ViewRecipePage />} />
         </Routes>
       </Router>
     </Provider>

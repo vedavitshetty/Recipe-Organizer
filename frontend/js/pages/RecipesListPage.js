@@ -5,7 +5,7 @@ import { addToRestaurant, fetchOtherRecipes, removeFromRestaurant } from '../sto
 import LogoutButton from '../components/LogoutButton';
 import { parseIngredients } from '../constants';
 
-const RecipesList = () => {
+const RecipesListPage = () => {
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipeSlice.recipes);
   const [showRestaurantRecipes, setShowRestaurantRecipes] = useState(false);
@@ -65,4 +65,4 @@ const RecipesList = () => {
   );
 };
 
-export default RecipesList;
+export default RecipesListPage;

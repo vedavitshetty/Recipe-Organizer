@@ -11,7 +11,7 @@ const LogoutButton = () => {
     dispatch(logoutUser())
       .unwrap()
       .then(() => {
-        navigate('/');
+        navigate('/login');
       })
   };
 

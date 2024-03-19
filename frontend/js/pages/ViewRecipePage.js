@@ -5,7 +5,7 @@ import { fetchRecipeById } from '../store/recipeSlice';
 import { parseIngredients } from '../constants';
 import LogoutButton from '../components/LogoutButton';
 
-const ViewRecipe = () => {
+const ViewRecipePage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const recipe = useSelector((state) => state.recipeSlice.currentRecipe);
@@ -37,4 +37,4 @@ const ViewRecipe = () => {
   );
 };
 
-export default ViewRecipe;
+export default ViewRecipePage;
