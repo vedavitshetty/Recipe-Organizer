@@ -35,9 +35,10 @@ export const fetchRestaurantRecipes = createAsyncThunk(
 
 export const addToRestaurant = createAsyncThunk(
   'user/addToRestaurant',
-  async (recipeId, { rejectWithValue }) => {
+  async (recipeId, { dispatch, rejectWithValue }) => {
     try {
       const response = await customAxios.post(`/api/recipes/add_to_restaurant/${recipeId}/`);
+      dispatch(fetchOtherRecipes());
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -47,9 +48,10 @@ export const addToRestaurant = createAsyncThunk(
 
 export const removeFromRestaurant = createAsyncThunk(
   'user/removeFromRestaurant',
-  async (recipeId, { rejectWithValue }) => {
+  async (recipeId, {dispatch, rejectWithValue }) => {
     try {
       const response = await customAxios.post(`/api/recipes/remove_from_restaurant/${recipeId}/`);
+      dispatch(fetchRestaurantRecipes());
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -121,6 +123,30 @@ export const recipeSlice = createSlice({
       .addCase(fetchRecipeById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch recipe';
+      })
+      .addCase(addToRestaurant.pending, (state) => {
+        state.loading = true;
+        state.error = '';
+      })
+      .addCase(addToRestaurant.fulfilled, (state, action) => {
+        state.loading = false;
+        alert('Recipe added to restaurant');
+      })
+      .addCase(addToRestaurant.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to add recipe to restaurant';
+      })
+      .addCase(removeFromRestaurant.pending, (state) => {
+        state.loading = true;
+        state.error = '';
+      })
+      .addCase(removeFromRestaurant.fulfilled, (state, action) => {
+        state.loading = false;
+        alert('Recipe removed from restaurant');
+      })
+      .addCase(removeFromRestaurant.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to remove recipe from restaurant';
       });
   },
 }).reducer;

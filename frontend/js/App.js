@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import * as Sentry from '@sentry/react';
 
-import Home from './pages/Home';
 import RecipesListPage from './pages/RecipesListPage';
 import ViewRecipePage from './pages/ViewRecipePage';
 import configureStore from './store';
