@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 
 from rest_framework import status, viewsets
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -75,7 +76,10 @@ class UserLoginAPIView(APIView):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
-            return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response(
+                {"token": token.key}, status=status.HTTP_200_OK
+            )
         else:
             return Response(
                 {"message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED

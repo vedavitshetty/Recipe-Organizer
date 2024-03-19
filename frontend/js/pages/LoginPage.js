@@ -35,7 +35,7 @@ const LoginPage = () => {
     <Col md={6}>
       <h2>Login</h2>
       <Form onSubmit={handleSubmit}>
-        {formError && <Alert className='mt-1' style={{ color: 'red' }}>{formError}</Alert>}
+        {formError && <div className='mt-1' style={{ color: 'red' }}>{formError}</div>}
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />

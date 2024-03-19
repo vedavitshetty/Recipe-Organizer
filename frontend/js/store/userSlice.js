@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import customAxios from '../utils/axios';
 
 const initialState = {
-  user: {},
+  isAuthenticated: false,
   loading: false,
   error: '',
 };
@@ -50,11 +50,8 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload;
-    },
-    resetUser: (state) => {
-      state.user = initialState.user;
+    setIsAuthenticated: (state, action) => {
+      state.isAuthenticated = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -77,8 +74,7 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
-        localStorage.setItem('user', JSON.stringify(action.payload));
+        state.isAuthenticated = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -90,7 +86,7 @@ export const userSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
-        state.user = initialState.user;
+        state.isAuthenticated = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;

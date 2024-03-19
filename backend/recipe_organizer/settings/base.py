@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "webpack_loader",
     "import_export",
     "rest_framework",
+    "rest_framework.authtoken",
     "defender",
     "common",
     "users",
